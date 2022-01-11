@@ -310,7 +310,7 @@ validator = $('#doctor_details_update').validate({
     }
 });
 
-validator = $('#add_user').validate({
+validator = $('#addStaff').validate({
     ignore: [],
     errorElement: 'span',
     errorClass: 'validation-error',
@@ -351,10 +351,14 @@ validator = $('#add_user').validate({
             maxlength: 13,
             not_empty: true,
         },
-        aadhar_no: {
+        aadhaar_no: {
             required: true,
             digits: true,
             maxlength: 13,
+            not_empty: true,
+        },
+        role: {
+            required: true,
             not_empty: true,
         },
         gender: {
@@ -365,11 +369,11 @@ validator = $('#add_user').validate({
             required: true,
             not_empty: true,
         },
-        profile_photo: {
+        avatar: {
             required: true,
             not_empty: true,
         },
-        document: {
+        document_pic: {
             required: true,
             not_empty: true,
         },
