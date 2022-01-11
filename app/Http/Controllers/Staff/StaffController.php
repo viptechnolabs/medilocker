@@ -36,7 +36,13 @@ class StaffController extends Controller
 
     public function staffDetails($id)
     {
-        dd('userDetails', $id);
+        $staff = User::findOrFail($id);
+        return view('staff.staffDetails', ['staff' => $staff]);
+    }
+
+    public function staffDetailsUpdate()
+    {
+        dd('staffDetailsUpdate');
     }
 
     public function staffDelete()

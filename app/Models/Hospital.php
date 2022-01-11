@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Hospital extends Model
+class Hospital extends Authenticatable
 {
     use HasFactory;
 
@@ -20,5 +20,11 @@ class Hospital extends Model
         'manager' => 'Manager',
         'accountant' => 'Accountant',
         'other' => 'Other',
+    ];
+
+    public const  USERTYPE = [
+        'hospital' => 'Hospital',
+        'doctor' => 'Doctor',
+        'staff' => 'Staff',
     ];
 }

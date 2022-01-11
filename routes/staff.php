@@ -20,3 +20,5 @@ Route::post('storeStaff', [App\Http\Controllers\Staff\StaffController::class, 's
 Route::get('staffDetails/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDetails'])->name('staffDetails');
 Route::get('staffDelete/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDelete'])->name('staffDelete');
 Route::get('deletedStaff', [App\Http\Controllers\Staff\StaffController::class, 'deletedStaff'])->name('deletedStaff');
+
+Route::put('staffDetailsUpdate', [App\Http\Controllers\Staff\StaffController::class, 'staffDetailsUpdate'])->name('staffDetailsUpdate');
