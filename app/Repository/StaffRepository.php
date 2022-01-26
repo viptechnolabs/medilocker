@@ -64,7 +64,7 @@ class StaffRepository
             if ($avatar) {
                 $destinationPath = public_path() . '/upload_file/staff/';
                 $fileName = $name . '_' . $avatar->getClientOriginalName();
-                $user->avatar = $fileName;
+                $user->avatar = 'staff/' . $fileName;
                 $avatar->move($destinationPath, $fileName);
             }
 
@@ -79,20 +79,21 @@ class StaffRepository
         if (!$newUser) {
 
             if ($avatar) {
+
                 $destinationPath = public_path() . '/upload_file/staff/';
                 $fileName = $name . '_' . $avatar->getClientOriginalName();
-                $image_path = public_path("upload_file/staff/{$user->avatar}");
-                if (File::exists($image_path)) {
+                $image_path = public_path("upload_file/{$user->avatar}");
+                if (File::exists($image_path) && $user->avatar != null) {
                     unlink($image_path);
                 }
                 $avatar->move($destinationPath, $fileName);
-                $user->avatar = $fileName;
+                $user->avatar = 'staff/' . $fileName;
             }
             if ($document_pic) {
                 $destinationPath = public_path() . '/upload_file/staff/staff_document';
                 $fileName = $aadhaar_no . '_' . $document_pic->getClientOriginalName();
                 $image_path = public_path("upload_file/staff/staff_document/{$user->document_pic}");
-                if (File::exists($image_path)) {
+                if (File::exists($image_path) && $user->document_pic != null) {
                     unlink($image_path);
                 }
                 $document_pic->move($destinationPath, $fileName);
@@ -106,11 +107,14 @@ class StaffRepository
         $staff_id_find = Staff::orderBy('staff_id', 'DESC')->first();
         $staff_id = substr($staff_id_find->staff_id ?? 'VIP/STAFF/' . date("Y") . '/0', -1) + 1;
 
-        $staff = new Staff();
-        $staff->user_id = $user->id;
-        $staff->staff_id = 'VIP/STAFF/' . date("Y") . '/' . $staff_id;
-        $staff->role = $role;
-        $staff->save();
+        if ($newUser) {
+            $staff = new Staff();
+            $staff->user_id = $user->id;
+            $staff->staff_id = 'VIP/STAFF/' . date("Y") . '/' . $staff_id;
+            $staff->role = $role;
+            $staff->save();
+        }
+
 
         if ($newUser) {
             activity('Add staff')

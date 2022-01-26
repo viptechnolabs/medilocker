@@ -10,11 +10,17 @@ use Illuminate\Support\Facades\Session;
 
 class HospitalController extends Controller
 {
+    protected $hospital, $userType;
+
+    public function __construct()
+    {
+        $this->hospital = Hospital::findOrFail(1);
+        $this->userType = Session::get('userType');
+    }
 
     public function index()
     {
-        $hospital = Hospital::findOrFail(1);
-        return view('index', ['hospital' => $hospital]);
+        return view('index', ['hospital' => $this->hospital]);
     }
 
     public function login()
@@ -78,7 +84,7 @@ class HospitalController extends Controller
 
     public function logout(): \Illuminate\Http\RedirectResponse
     {
-        if (Session::get('userType') === "hospital") {
+        if ($this->userType === "hospital") {
 
             activity('Logout')
                 ->performedOn(Auth::guard('hospital')->user())
@@ -87,9 +93,9 @@ class HospitalController extends Controller
 
             Auth::guard('hospital')->logout();
 
-        } elseif (Session::get('userType') === "doctor" || Session::get('userType') === "staff") {
+        } elseif ($this->userType === "doctor" || $this->userType === "staff") {
 
-            if (Session::get('userType') === "doctor") {
+            if ($this->userType === "doctor") {
 
                 activity('Doctor logout')
                     ->performedOn(Auth::guard('doctor')->user())
@@ -98,7 +104,7 @@ class HospitalController extends Controller
 
                 Auth::guard('doctor')->logout();
 
-            } elseif (Session::get('userType') === "staff") {
+            } elseif ($this->userType === "staff") {
 
                 activity('User logout')
                     ->performedOn(Auth::guard('web')->user())

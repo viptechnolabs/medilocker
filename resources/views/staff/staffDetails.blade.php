@@ -29,7 +29,7 @@
                                     <div id="crop-avatar">
                                         <!-- Current avatar -->
                                         <img class="img-responsive avatar-view"
-                                             src="{{$staff->avatar ? asset('upload_file/staff/'.$staff->avatar) : asset('upload_file/default.png')}}"
+                                             src="{{$staff->avatar ? asset('upload_file/'.$staff->avatar) : asset('upload_file/default.png')}}"
                                              alt="{{$staff->name}}"
                                              title="Change the avatar" style="height: 220px; width: 220px">
                                     </div>
@@ -135,7 +135,7 @@
                                                                 class="control-label col-md-3 col-sm-3 ">Role</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <select id="role" name="role"
-                                                                        class="form-control" {{Session::get('userType') === "staff" ? "disabled" : ""}}>
+                                                                        class="form-control">
                                                                     <option value="" disabled selected>Choose..</option>
                                                                     @foreach(App\Models\Hospital::ROLE as $key => $value)
                                                                         <option
@@ -285,7 +285,7 @@
                                                                 Photo</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="file" id="profile_photo"
-                                                                       name="profile_photo" accept="image/*"
+                                                                       name="avatar" accept="image/*"
                                                                        oninput="profile_preview.src=window.URL.createObjectURL(this.files[0])"/>
                                                                 <img id="profile_preview" width="100px"/>
                                                             </div>
@@ -300,19 +300,19 @@
                                                                 <div class="col-md-55">
                                                                     <div class="thumbnail">
                                                                         <div class="image view view-first">
-                                                                            <a href="{{$staff->document_pic ? asset('upload_file/staff/staff_document/'.$staff->document_photo) : asset('upload_file/default.png')}}"
+                                                                            <a href="{{$staff->document_pic ? asset('upload_file/staff/staff_document/'.$staff->document_pic) : asset('upload_file/default.png')}}"
                                                                                target="_blank">
                                                                                 <img
                                                                                     style="width: 100%; display: block;"
-                                                                                    src="{{$staff->document_pic ? asset('upload_file/staff/staff_document/'.$staff->document_photo) : asset('upload_file/default.png')}}"
+                                                                                    src="{{$staff->document_pic ? asset('upload_file/staff/staff_document/'.$staff->document_pic) : asset('upload_file/default.png')}}"
                                                                                     alt="image">
                                                                             </a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
                                                                 @if(Session::get('userType') !== "staff" )
-                                                                    <input type="file" id="document_photo"
-                                                                           name="document_photo" accept="image/*"
+                                                                    <input type="file" id="document_pic"
+                                                                           name="document_pic" accept="image/*"
                                                                            alt="{{$staff->name}}"
                                                                            oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
                                                                     <img id="document_preview" width="100px"/>

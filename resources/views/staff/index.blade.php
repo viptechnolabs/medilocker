@@ -60,7 +60,7 @@
                                             <td>{{ $no + 1 }}</td>
                                             <td style="padding: 15px; text-align: center;">
                                                 <img
-                                                    src='{{$staff->avatar ? asset('upload_file/staff/'.$staff->avatar) : asset('upload_file/default.png')}}'
+                                                    src='{{$staff->avatar ? asset('upload_file/'.$staff->avatar) : asset('upload_file/default.png')}}'
                                                     width='40px'/>
                                             </td>
                                             <td>{{ $staff->name }}</td>
