@@ -10,9 +10,14 @@ use Illuminate\Support\Facades\Hash;
 class StaffRepository
 {
 
-    public function store($request)
+    public function store($request): User
     {
         return $this->createOrUpdate($request, new User());
+    }
+
+    public function update($request, User $user): User
+    {
+        return $this->createOrUpdate($request, $user);
     }
 
     private function createOrUpdate($request, User $user): User
@@ -35,7 +40,6 @@ class StaffRepository
         $dob = $request->input('dob');
         $avatar = $request->avatar;
         $document_pic = $request->document_pic;
-        $password = Hash::make('password');
 
 
         // save data
@@ -50,10 +54,11 @@ class StaffRepository
         $user->pin_code = $pin_code;
         $user->aadhaar_no = $aadhaar_no;
         $user->dob = $dob;
-        $user->password = $password;
+
 
         if ($newUser) {
-
+            $password = Hash::make('password');
+            $user->password = $password;
             $user->gender = $gender;
 
             if ($avatar) {
@@ -118,10 +123,5 @@ class StaffRepository
         }
 
         return $user;
-    }
-
-    public function update($request, User $user)
-    {
-        return $this->createOrUpdate($request, $user);
     }
 }

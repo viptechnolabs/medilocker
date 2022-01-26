@@ -13,8 +13,7 @@ class HospitalController extends Controller
 
     public function index()
     {
-
-        $hospital = Hospital::findOrFail(Auth::user()->id);
+        $hospital = Hospital::findOrFail(1);
         return view('index', ['hospital' => $hospital]);
     }
 

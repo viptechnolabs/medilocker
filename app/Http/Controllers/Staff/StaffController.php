@@ -40,9 +40,14 @@ class StaffController extends Controller
         return view('staff.staffDetails', ['staff' => $staff]);
     }
 
-    public function staffDetailsUpdate()
+    public function staffDetailsUpdate(StaffRequest $request)
     {
-        dd('staffDetailsUpdate');
+        $id = $request->input('id');
+        $user = User::findOrFail($id);
+
+        $this->staffRepository->update($request, $user);
+        session()->flash('message', 'Staff update successfully...!');
+        return redirect()->back();
     }
 
     public function staffDelete()

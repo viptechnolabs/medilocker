@@ -130,37 +130,68 @@
                                                                        placeholder="Staff Id" readonly>
                                                             </div>
                                                         </div>
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="control-label col-md-3 col-sm-3 ">Role</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <select id="role" name="role"
+                                                                        class="form-control" {{Session::get('userType') === "staff" ? "disabled" : ""}}>
+                                                                    <option value="" disabled selected>Choose..</option>
+                                                                    @foreach(App\Models\Hospital::ROLE as $key => $value)
+                                                                        <option
+                                                                            value="{{ $key }}" {{($key == $staff->staff->role) ? "selected" : ""}}> {{$value}}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+
+                                                        </div>
                                                         <div class="form-group row ">
                                                             <label class="control-label col-md-3 col-sm-3 ">Name</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        name="name"
                                                                        value="{{$staff->name}}"
-                                                                       placeholder="Name">
+                                                                       placeholder="Name" {{Session::get('userType') === "staff" ? "readonly" : ""}}>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Email</label>
                                                             <div
-                                                                class="col-md-7 col-sm-3">
+                                                                class="{{Session::get('userType') === "staff" ? "col-md-7 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="email" class="form-control"
                                                                        value="{{$staff->email}}"
                                                                        placeholder="Email"
-                                                                       name="email">
+                                                                       name="email" {{Session::get('userType') === "staff" ? "readonly" : ""}}>
                                                             </div>
+                                                            @if(Session::get('userType') === "staff" )
+                                                                <a class="border-button" href="javascript:;"
+                                                                   onclick="getEmailPopup('{{ route('email.popup.get', $staff->id) }}', '{{ route('check.email') }}', {{ $staff->id }}, '{{ Session::get('userType') }}')">
+                                                                    <button type="button" class="btn btn-secondary">
+                                                                        Change Email
+                                                                    </button>
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
                                                                 class="control-label col-md-3 col-sm-3 ">Mobile
                                                                 No</label>
                                                             <div
-                                                                class="col-md-6 col-sm-3">
+                                                                class="{{Session::get('userType') === "staff" ? "col-md-6 col-sm-3" : "col-md-9 col-sm-9"}}">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$staff->mobile_no}}"
                                                                        placeholder="Mobile No"
-                                                                       name="mobile_no">
+                                                                       name="mobile_no" {{Session::get('userType') === "staff" ? "readonly" : ""}}>
                                                             </div>
+                                                            @if(Session::get('userType') === "staff" )
+                                                                <a class="border-button" href="javascript:;"
+                                                                   onclick="getMobilePopup('{{ route('mobile.popup.get', $staff->id) }}', '{{ route('check.mobile') }}', {{ $staff->id }}, '{{ Session::get('userType') }}')">
+                                                                    <button type="button" class="btn btn-secondary">
+                                                                        Change Mobile No
+                                                                    </button>
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="control-label col-md-3 col-sm-3 "> Address
@@ -200,13 +231,13 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
-                                                                class="control-label col-md-3 col-sm-3 ">Aadhar
+                                                                class="control-label col-md-3 col-sm-3 ">Aadhaar
                                                                 No</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <input type="text" class="form-control"
                                                                        value="{{$staff->aadhaar_no}}"
-                                                                       placeholder="Aadhar No"
-                                                                       name="aadhaar_no">
+                                                                       placeholder="Aadhaar No"
+                                                                       name="aadhaar_no" {{Session::get('userType') === "staff" ? "readonly" : ""}}>
                                                             </div>
 
                                                         </div>
@@ -232,6 +263,21 @@
                                                                 </script>
                                                             </div>
 
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label
+                                                                class="control-label col-md-3 col-sm-3 ">Password</label>
+                                                            <div class="col-md-9 col-sm-9 ">
+                                                                <a href="javascript:;" class="border-button"
+                                                                   data-toggle="modal"
+                                                                   data-target="#change_password"
+                                                                   onclick="changePasswordClick('{{ route('check.password') }}')">
+                                                                    <button type="button"
+                                                                            class="btn btn-sm btn-secondary">
+                                                                        Change Password
+                                                                    </button>
+                                                                </a>
+                                                            </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
@@ -264,11 +310,13 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <input type="file" id="document_photo"
-                                                                       name="document_photo" accept="image/*"
-                                                                       alt="{{$staff->name}}"
-                                                                       oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
-                                                                <img id="document_preview" width="100px"/>
+                                                                @if(Session::get('userType') !== "staff" )
+                                                                    <input type="file" id="document_photo"
+                                                                           name="document_photo" accept="image/*"
+                                                                           alt="{{$staff->name}}"
+                                                                           oninput="document_preview.src=window.URL.createObjectURL(this.files[0])">
+                                                                    <img id="document_preview" width="100px"/>
+                                                                @endif
                                                             </div>
 
                                                         </div>
@@ -281,11 +329,13 @@
                                                                 </a>
                                                                 <button type="reset" class="btn btn-primary">Reset
                                                                 </button>
-                                                                <a href="{{route('staff.staffDelete', $staff->id)}}">
-                                                                    <button type="button" class="btn btn-danger">
-                                                                        Delete
-                                                                    </button>
-                                                                </a>
+                                                                @if(Session::get('userType') !== "user" )
+                                                                    <a href="{{route('staff.staffDelete', $staff->id)}}">
+                                                                        <button type="button" class="btn btn-danger">
+                                                                            Delete
+                                                                        </button>
+                                                                    </a>
+                                                                @endif
                                                                 <button class="btn btn-success">Submit
                                                                 </button>
                                                             </div>
