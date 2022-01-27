@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class CheckStatus
+class CheckUserType
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $role)
     {
-        if (Auth::guard('hospital')->check()) {
+        if ($role === 'staff' && $request->url() === route('staff.staffDetailsUpdate')) {
             return $next($request);
-        } elseif (Auth::check() && Auth::user()->status === 'active') {
+        }
+        if ($role === 'doctor' && $request->url() === route('doctorDetailsUpdate')) {
+            dd($role);
             return $next($request);
         }
 

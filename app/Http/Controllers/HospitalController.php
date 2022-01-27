@@ -84,7 +84,7 @@ class HospitalController extends Controller
         $cities = City::where("state_id", $request->stateId)->get();
         return view('components.city', [
             'cities' => $cities,
-            'selected' => $request->selected
+            'selected' => $request->input('selected')
         ])->render();
     }
 }

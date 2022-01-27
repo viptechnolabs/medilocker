@@ -13,16 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
-    Route::get('hospitalDetails', [\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospitalDetails');
-    Route::put('hospitalDetailsUpdate', [\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospitalDetailsUpdate');
-});
+/* Hospital, Doctor and Staff middleware */
 Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
 
     Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
 
-    /* Hospital, Doctor and Staff Middleware */
-    Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
+    /* Email, mobile change popup route */
     Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
     Route::post('mobile/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getMobilePopup'])->name('mobile.popup.get');
 
@@ -38,11 +34,16 @@ Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
 
 });
 
-Route::middleware(['auth:web', 'checkStatus'])->group(function () {
-    /* Doctor and User Middleware */
-    Route::get('profile', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
+/* Hospital middleware */
+Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
+    Route::get('hospitalDetails', [\App\Http\Controllers\HospitalController::class, 'hospitalDetails'])->name('hospitalDetails');
+    Route::put('hospitalDetailsUpdate', [\App\Http\Controllers\HospitalController::class, 'hospitalDetailsUpdate'])->name('hospitalDetailsUpdate');
 });
 
+/* Doctor and staff middleware */
+Route::middleware(['auth:web', 'checkStatus'])->group(function () {
+    Route::get('profile', [App\Http\Controllers\HospitalController::class, 'profile'])->name('profile');
+});
 
 /* login route */
 Route::get('login', [\App\Http\Controllers\LoginController::class, 'login'])->name('login');

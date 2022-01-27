@@ -14,11 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', [App\Http\Controllers\Staff\StaffController::class, 'index'])->name('index');
-Route::get('addStaff', [App\Http\Controllers\Staff\StaffController::class, 'addStaff'])->name('addStaff');
-Route::post('storeStaff', [App\Http\Controllers\Staff\StaffController::class, 'storeStaff'])->name('storeStaff');
-Route::get('staffDetails/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDetails'])->name('staffDetails');
-Route::get('staffDelete/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDelete'])->name('staffDelete');
-Route::get('deletedStaff', [App\Http\Controllers\Staff\StaffController::class, 'deletedStaff'])->name('deletedStaff');
+Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
+    Route::get('/', [App\Http\Controllers\Staff\StaffController::class, 'index'])->name('index');
+    Route::get('addStaff', [App\Http\Controllers\Staff\StaffController::class, 'addStaff'])->name('addStaff');
+    Route::post('storeStaff', [App\Http\Controllers\Staff\StaffController::class, 'storeStaff'])->name('storeStaff');
+    Route::get('staffDetails/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDetails'])->name('staffDetails');
+    Route::get('staffDelete/{id}', [App\Http\Controllers\Staff\StaffController::class, 'staffDelete'])->name('staffDelete');
+    Route::get('deletedStaff', [App\Http\Controllers\Staff\StaffController::class, 'deletedStaff'])->name('deletedStaff');
+});
 
-Route::put('staffDetailsUpdate', [App\Http\Controllers\Staff\StaffController::class, 'staffDetailsUpdate'])->name('staffDetailsUpdate');
+Route::middleware(['auth:hospital', 'checkStatus', 'checkUserType:staff'])->group(function () {
+    Route::put('staffDetailsUpdate', [App\Http\Controllers\Staff\StaffController::class, 'staffDetailsUpdate'])->name('staffDetailsUpdate');
+});
