@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+/* Hospital middleware */
 Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     Route::get('/', [App\Http\Controllers\Staff\StaffController::class, 'index'])->name('index');
     Route::get('addStaff', [App\Http\Controllers\Staff\StaffController::class, 'addStaff'])->name('addStaff');
@@ -23,6 +23,7 @@ Route::middleware(['auth:hospital', 'checkStatus'])->group(function () {
     Route::get('deletedStaff', [App\Http\Controllers\Staff\StaffController::class, 'deletedStaff'])->name('deletedStaff');
 });
 
+/* Hospital and staff middleware */
 Route::middleware(['auth:hospital', 'checkStatus', 'checkUserType:staff'])->group(function () {
     Route::put('staffDetailsUpdate', [App\Http\Controllers\Staff\StaffController::class, 'staffDetailsUpdate'])->name('staffDetailsUpdate');
 });
