@@ -53,13 +53,13 @@ class StaffRepository
         $user->state_id = $state;
         $user->pin_code = $pin_code;
         $user->aadhaar_no = $aadhaar_no;
+        $user->gender = $gender;
         $user->dob = $dob;
 
 
         if ($newUser) {
             $password = Hash::make('password');
             $user->password = $password;
-            $user->gender = $gender;
 
             if ($avatar) {
                 $destinationPath = public_path() . '/upload_file/staff/';
@@ -111,9 +111,13 @@ class StaffRepository
             $staff = new Staff();
             $staff->user_id = $user->id;
             $staff->staff_id = 'VIP/STAFF/' . date("Y") . '/' . $staff_id;
-            $staff->role = $role;
-            $staff->save();
         }
+
+        if (!$newUser) {
+            $staff = Staff::where('user_id', $user->id)->first();
+        }
+        $staff->role = $role;
+        $staff->save();
 
 
         if ($newUser) {

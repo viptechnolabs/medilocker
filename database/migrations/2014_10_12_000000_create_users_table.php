@@ -39,7 +39,7 @@ class CreateUsersTable extends Migration
             $table->string('telephone_no')->nullable();
             $table->string('fex_no')->nullable();
             $table->longText('address');
-            $table->string('pin_cord_no');
+            $table->string('pin_code');
             $table->string('token')->unique()->nullable();
             $table->string('verification_code')->unique()->nullable();
             $table->string('password');

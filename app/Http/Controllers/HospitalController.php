@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\HospitalRequest;
 use App\Models\City;
 use App\Models\Hospital;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
 
 class HospitalController extends Controller
 {
-    protected $hospital, $userType;
+
+    protected $hospital;
 
     public function __construct()
     {
         $this->hospital = Hospital::findOrFail(1);
-        $this->userType = Session::get('userType');
     }
 
     public function index()
@@ -23,102 +26,57 @@ class HospitalController extends Controller
         return view('index', ['hospital' => $this->hospital]);
     }
 
-    public function login()
+    public function hospitalDetails()
     {
-        if (Auth::guard('hospital')->check() || Auth::guard('web')->check()) {
-            return redirect()->route('index');
-        } else {
-            return view('login');
+        return view('hospitalDetails', ['hospital' => $this->hospital]);
+    }
+
+    public function profile()
+    {
+        if (Session::get('userType') === 'doctor') {
+            dd('doctor');
+        } elseif (Session::get('userType') === 'staff') {
+            $staff = User::findOrFail(Auth::user()->id);
+            return view('staff.staffDetails', ['staff' => $staff, 'hospital' => $this->hospital]);
         }
     }
 
-    public function doLogin(Request $request): \Illuminate\Http\RedirectResponse
+    public function hospitalDetailsUpdate(HospitalRequest $request): \Illuminate\Http\RedirectResponse
     {
-        if ($request->input('userType') === "hospital") {
-            if (Auth::guard('hospital')->attempt(['email' => $request->email, 'password' => $request->password], $request->filled('remember'))) {
+        // Request params
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $details = $request->input('details');
+        $fex_no = $request->input('fex_no');
+        $pin_code = $request->input('pin_code');
+        $address = $request->input('address');
+        $logo = $request->logo;
 
-                //Authentication passed...
-                activity('Login')
-                    ->performedOn(Auth::guard('hospital')->user())
-                    ->causedBy(Auth::guard('hospital')->user())
-                    ->log(Auth::guard('hospital')->user()->name . ' Hospital login');
+        $hospital = Hospital::findOrFail(Auth::guard('hospital')->user()->id);
+        $hospital->name = $name;
+        $hospital->details = $details;
+        $hospital->fex_no = $fex_no;
+        $hospital->pin_code = $pin_code;
+        $hospital->address = $address;
 
-                Session::put('userType', 'hospital');
-
-                return redirect()->route('index');
+        if ($logo) {
+            $destinationPath = public_path() . '/upload_file/';
+            $fileName = $name . '_' . $logo->getClientOriginalName();
+            $image_path = public_path("upload_file/{$hospital->logo}");
+            if (File::exists($image_path) && $hospital->logo != null) {
+                unlink($image_path);
             }
-        } elseif ($request->input('userType') === "doctor" || $request->input('userType') === "staff") {
-            if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 'active'], $request->filled('remember'))) {
-
-                //Authentication passed...
-
-                if ($request->input('userType') === "doctor") {
-                    activity('Doctor login')
-                        ->performedOn(Auth::guard('web')->user())
-                        ->causedBy(Auth::guard('web')->user())
-                        ->log('Dr. ' . Auth::guard('web')->user()->name . ' are login');
-
-                    Session::put('userType', 'doctor');
-
-                } elseif ($request->input('userType') === "staff") {
-                    activity('Staff login')
-                        ->performedOn(Auth::guard('web')->user())
-                        ->causedBy(Auth::guard('web')->user())
-                        ->log(Auth::guard('web')->user()->name . ' are     login');
-
-                    Session::put('userType', 'staff');
-
-                }
-
-                return redirect()->route('index');
-            }
+            $logo->move($destinationPath, $fileName);
+            $hospital->logo = $fileName;
         }
+        $hospital->save();
 
-        //Authentication failed...
-        return redirect()
-            ->back()
-            ->withInput()
-            ->with('error', 'Login failed, please try again!');
+        activity('Hospital details update')
+            ->performedOn($hospital)
+            ->log($name . ' details are updated');
 
-    }
-
-    public function logout(): \Illuminate\Http\RedirectResponse
-    {
-        if ($this->userType === "hospital") {
-
-            activity('Logout')
-                ->performedOn(Auth::guard('hospital')->user())
-                ->causedBy(Auth::guard('hospital')->user())
-                ->log(Auth::guard('hospital')->user()->name . ' are logout');
-
-            Auth::guard('hospital')->logout();
-
-        } elseif ($this->userType === "doctor" || $this->userType === "staff") {
-
-            if ($this->userType === "doctor") {
-
-                activity('Doctor logout')
-                    ->performedOn(Auth::guard('doctor')->user())
-                    ->causedBy(Auth::guard('doctor')->user())
-                    ->log('Dr. ' . Auth::guard('doctor')->user()->name . ' are logout');
-
-                Auth::guard('doctor')->logout();
-
-            } elseif ($this->userType === "staff") {
-
-                activity('User logout')
-                    ->performedOn(Auth::guard('web')->user())
-                    ->causedBy(Auth::guard('web')->user())
-                    ->log(Auth::guard('web')->user()->name . ' are logout');
-
-                Auth::logout();
-
-            }
-        }
-        Session::flush();
-        return redirect()
-            ->route('login')
-            ->with('message', 'Logout successfully...!');
+        session()->flash('message', 'Hospital details update successfully..!');
+        return redirect()->back();
     }
 
     public function fetchCities(Request $request): string

@@ -73,12 +73,12 @@
                         </ul>
 
                         @if(Auth::guard('hospital')->check())
-                        <ul class="nav side-menu">
-                            <li><a href=""><i class="fa fa-user-md"></i> Doctors</a></li>
-                        </ul>
-                        <ul class="nav side-menu">
-                            <li><a href="{{route('staff.index')}}"><i class="fa fa-user"></i>Staff</a></li>
-                        </ul>
+                            <ul class="nav side-menu">
+                                <li><a href=""><i class="fa fa-user-md"></i> Doctors</a></li>
+                            </ul>
+                            <ul class="nav side-menu">
+                                <li><a href="{{route('staff.index')}}"><i class="fa fa-user"></i>Staff</a></li>
+                            </ul>
                         @endif
 
                         <ul class="nav side-menu">
@@ -86,9 +86,9 @@
                         </ul>
 
                         @if(Auth::guard('hospital')->check())
-                        <ul class="nav side-menu">
-                            <li><a href=""><i class="fa fa-clock-o"></i> Activity</a></li>
-                        </ul>
+                            <ul class="nav side-menu">
+                                <li><a href=""><i class="fa fa-clock-o"></i> Activity</a></li>
+                            </ul>
                         @endif
 
                     </div>
@@ -99,10 +99,16 @@
                 <!-- /menu footer buttons -->
                 <div class="sidebar-footer hidden-small">
 
-
-                    <a href="" data-toggle="tooltip" data-placement="top" title="Settings">
-                        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-                    </a>
+                    @if(Auth::guard('hospital')->check())
+                        <a href="{{ route('hospitalDetails') }}" data-toggle="tooltip" data-placement="top"
+                           title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    @elseif (Auth::check())
+                        <a href="{{ route('profile') }}" data-toggle="tooltip" data-placement="top" title="Settings">
+                            <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                        </a>
+                    @endif
 
                     <a data-toggle="tooltip" data-placement="top" title="FullScreen">
                         <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
@@ -141,7 +147,11 @@
                                 </a>
                             @endif
                             <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="javascript:;"> Profile</a>
+                                @if(Auth::guard('hospital')->check())
+                                    <a class="dropdown-item" href="{{ route('hospitalDetails') }}"> Profile</a>
+                                @elseif (Auth::check())
+                                    <a class="dropdown-item" href="{{ route('profile') }}"> Profile</a>
+                                @endif
                                 <a class="dropdown-item" href="javascript:;">
                                     <span class="badge bg-red pull-right">50%</span>
                                     <span>Settings</span>

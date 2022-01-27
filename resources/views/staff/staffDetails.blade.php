@@ -92,7 +92,7 @@
                                                     <br/>
                                                     <form action="{{route('staff.staffDetailsUpdate')}}"
                                                           class="form-horizontal form-label-left" method="post"
-                                                          enctype="multipart/form-data" id="staff_details_update">
+                                                          enctype="multipart/form-data" id="staffDetailsUpdate">
                                                         @method('put')
                                                         @csrf
 
@@ -135,7 +135,7 @@
                                                                 class="control-label col-md-3 col-sm-3 ">Role</label>
                                                             <div class="col-md-9 col-sm-9 ">
                                                                 <select id="role" name="role"
-                                                                        class="form-control">
+                                                                        class="form-control" {{Session::get('userType') === "staff" ? "disabled" : ""}}>
                                                                     <option value="" disabled selected>Choose..</option>
                                                                     @foreach(App\Models\Hospital::ROLE as $key => $value)
                                                                         <option
@@ -243,6 +243,24 @@
                                                         </div>
                                                         <div class="form-group row">
                                                             <label
+                                                                class="control-label col-md-3 col-sm-3 ">Gender</label>
+                                                            <div class="col-md-6 col-sm-6 ">
+                                                                <div class="radio-group mt-2">
+                                                                    <div class="radio">
+                                                                        @foreach(App\Models\Hospital::GENDER as $key => $value )
+                                                                            <label>
+                                                                                <input type="radio" value="{{ $key }}"
+                                                                                       id="routine_checkup"
+                                                                                       name="gender" {{ ($key === $staff->gender) ? 'checked' : '' }}> {{ $value }}
+                                                                                &nbsp;&nbsp;
+                                                                            </label>
+                                                                        @endforeach
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label
                                                                 class="control-label col-md-3 col-sm-3 ">Date Of
                                                                 Birth</label>
                                                             <div class="col-md-9 col-sm-9 ">
@@ -343,8 +361,8 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                        {{--                                            <x-change-password id="{{$staff->id}}" user-type="staff"/>--}}
-                                        <!-- Change E-mails Pop-Up -->
+                                            <x-change-password id="{{$staff->id}}" user-type="staffOrDoctor"/>
+                                            <!-- Change E-mails Pop-Up -->
                                             <div id="update_email_popup"></div>
                                             <!-- /Change E-mails Pop-Up -->
                                             <!-- Change Mobile Pop-Up -->

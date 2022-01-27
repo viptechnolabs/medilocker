@@ -30,7 +30,7 @@ class StaffController extends Controller
         return view('staff.addStaff', ['hospital' => $this->hospital]);
     }
 
-    public function storeStaff(StaffRequest $request)
+    public function storeStaff(StaffRequest $request): \Illuminate\Http\RedirectResponse
     {
         $this->staffRepository->store($request);
         session()->flash('message', 'Staff add successfully...!');
@@ -43,7 +43,7 @@ class StaffController extends Controller
         return view('staff.staffDetails', ['staff' => $staff, 'hospital' => $this->hospital]);
     }
 
-    public function staffDetailsUpdate(StaffRequest $request)
+    public function staffDetailsUpdate(StaffRequest $request): \Illuminate\Http\RedirectResponse
     {
         $id = $request->input('id');
         $user = User::findOrFail($id);

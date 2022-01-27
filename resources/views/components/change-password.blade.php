@@ -3,8 +3,8 @@
      role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
-            <form action="{{route('change_password')}}"
-                  class="form-horizontal form-label-left" method="POST" id="change_password_form">
+            <form action="{{route('changePassword')}}"
+                  class="form-horizontal form-label-left" method="POST" id="changePassword">
                 @csrf
                 @method('PUT')
 
@@ -17,24 +17,22 @@
                     </button>
                 </div>
                 <input type="hidden" class="form-control" name="id" value="{{$id}}">
-                <input type="hidden" class="form-control" name="user_type" id="user_type" value="{{$user_type}}">
+                <input type="hidden" class="form-control" name="userType" id="userType" value="{{$userType}}">
                 @if(Auth::guard('hospital')->check())
-                    @if(url()->current() === route('hospital_details'))
+                    @if(url()->current() === route('hospitalDetails'))
                         <div class="modal-body">
                             <h4>Current Password</h4>
-
                             <input type="password" class="form-control" placeholder="Current Password"
-                                   name="current_password"
-                                   id="current_password">
+                                   name="currentPassword"
+                                   id="currentPassword">
                         </div>
                     @endif
-                @elseif(Auth::guard('doctor')->check()  or Auth::guard('web')->check())
+                @elseif(Auth::check())
                     <div class="modal-body">
                         <h4>Current Password</h4>
-
                         <input type="password" class="form-control" placeholder="Current Password"
-                               name="current_password"
-                               id="current_password">
+                               name="currentPassword"
+                               id="currentPassword">
                     </div>
                 @endif
                 <div class="modal-body">
@@ -48,7 +46,7 @@
                     <h4>Confirm Password</h4>
 
                     <input type="password" class="form-control" placeholder="Retype New Password" value=""
-                           name="confirm_password">
+                           name="confirmPassword">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"

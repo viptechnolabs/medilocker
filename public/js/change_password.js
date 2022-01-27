@@ -1,20 +1,20 @@
 let changePasswordValidator;
 
 function changePasswordClick(action) {
-    changePasswordValidator = $('#change_password_form').validate({
+    changePasswordValidator = $('#changePassword').validate({
         errorElement: 'span',
         errorClass: 'validation-error',
         rules: {
-            current_password: {
+            currentPassword: {
                 required: true,
                 remote: {
                     url: action,
                     type: "post",
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
-                        user_type: $("#user_type").val(),
-                        current_password: function () {
-                            return $("#current_password").val();
+                        userType: $("#userType").val(),
+                        currentPassword: function () {
+                            return $("#currentPassword").val();
                         }
                     }
                 }
@@ -22,20 +22,20 @@ function changePasswordClick(action) {
             password: {
                 required: true
             },
-            confirm_password: {
+            confirmPassword: {
                 required: true,
                 equalTo: "#password"
             }
         },
         messages: {
-            current_password: {
+            currentPassword: {
                 required: "Please enter current password",
                 remote: "Password does not match"
             },
             password: {
                 required: "Please enter new password"
             },
-            confirm_password: {
+            confirmPassword: {
                 required: "Please enter retype new password",
                 equalTo: "Confirm password does not match",
             }
