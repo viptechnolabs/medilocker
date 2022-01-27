@@ -54,4 +54,14 @@ class UpdateMobileEmailPasswordController extends Controller
         session()->flash('message', 'Password Change Successfully..!');
         return redirect()->back();
     }
+
+    public function getEmailPopup()
+    {
+        dd('getEmailPopup');
+    }
+
+    public function getMobilePopup()
+    {
+        dd('getMobilePopup');
+    }
 }

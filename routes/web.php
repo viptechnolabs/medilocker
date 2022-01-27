@@ -19,8 +19,8 @@ Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
     Route::get('/', [\App\Http\Controllers\HospitalController::class, 'index'])->name('index');
 
     /* Email, mobile change popup route */
-    Route::post('email/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getEmailPopup'])->name('email.popup.get');
-    Route::post('mobile/popup/{user}', [\App\Http\Controllers\HospitalController::class, 'getMobilePopup'])->name('mobile.popup.get');
+    Route::post('email/popup/{user}', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'getEmailPopup'])->name('email.popup.get');
+    Route::post('mobile/popup/{user}', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'getMobilePopup'])->name('mobile.popup.get');
 
     /* Check email,mobile and password route */
     Route::prefix('check')->as('check.')->group(function () {
