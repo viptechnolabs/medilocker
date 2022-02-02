@@ -273,14 +273,15 @@
                                                     </form>
                                                 </div>
                                             </div>
-                                            {{--                                            <x-change-password />--}}
+                                            <!-- Change password pop-up -->
                                             <x-change-password id="{{$hospital->id}}" user-type="hospital"/>
-                                            <!-- Change E-mails Pop-Up -->
-                                            <div id="update_email_popup"></div>
-                                            <!-- /Change E-mails Pop-Up -->
-                                            <!-- Change Mobile Pop-Up -->
+                                            <!-- Change password pop-up -->
+                                            <!-- Change emails pop-up -->
+                                            <div id="updateEmailPopup"></div>
+                                            <!-- /Change emails pop-up -->
+                                            <!-- Change mobile pop-up -->
                                             <div id="update_mobile_popup"></div>
-                                            <!-- /Change Mobile Pop-Up -->
+                                            <!-- /Change mobile pop-up -->
                                         </div>
                                         <!-- end hospital details update -->
                                         <!-- start patient count -->
@@ -320,11 +321,6 @@
                                             </table>
                                         </div>
                                         <!-- end doctor and  patient count -->
-                                        <!-- start recent activity -->
-                                    {{--                                        <div role="tabpanel" class="tab-pane fade" id="edit"--}}
-                                    {{--                                             aria-labelledby="profile-tab">--}}
-                                    {{--                                        </div>--}}
-                                    <!-- end recent activity -->
                                     </div>
                                 </div>
                             </div>
@@ -335,5 +331,3 @@
         </div>
     </div>
 @stop
-
-

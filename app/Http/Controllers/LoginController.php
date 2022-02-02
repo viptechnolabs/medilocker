@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hospital;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
-    protected $userType;
+    protected $hospital, $userType;
 
     public function __construct()
     {
+        $this->hospital = Hospital::findOrFail(1);
         $this->userType = Session::get('userType');
     }
 
@@ -20,7 +22,7 @@ class LoginController extends Controller
         if (Auth::guard('hospital')->check() || Auth::guard('web')->check()) {
             return redirect()->route('index');
         } else {
-            return view('login');
+            return view('login', ['hospital' => $this->hospital]);
         }
     }
 

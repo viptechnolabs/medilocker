@@ -24,9 +24,17 @@ Route::middleware(['auth:hospital,web', 'checkStatus'])->group(function () {
 
     /* Check email,mobile and password route */
     Route::prefix('check')->as('check.')->group(function () {
-        Route::post('email', [\App\Http\Controllers\HospitalController::class, 'checkEmail'])->name('email');
+        Route::post('email', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'checkEmail'])->name('email');
         Route::post('mobile', [\App\Http\Controllers\HospitalController::class, 'checkMobile'])->name('mobile');
         Route::post('password', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'checkPassword'])->name('password');
+    });
+
+    /* */
+    Route::prefix('profile')->as('profile.')->group(function () {
+        Route::post('update/email', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'updateEmail'])->name('update.email');
+        Route::post('update/emailVerificationCode', [\App\Http\Controllers\UpdateMobileEmailPasswordController::class, 'emailVerificationCode'])->name('update.emailVerificationCode');
+        Route::post('update/mobile_no', [\App\Http\Controllers\HospitalController::class, 'hospitalUpdateMobileNo'])->name('update.mobile');
+        Route::post('update/mobile_verification_code', [\App\Http\Controllers\HospitalController::class, 'mobile_verification_code'])->name('update.mobile_verification_code');
     });
 
     /* Change password */

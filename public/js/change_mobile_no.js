@@ -54,7 +54,7 @@ function mobilePopupValidation(checkMobileAction, userId, userType) {
         },
         error: function (error) {
             console.log(error);
-            $("#change_email_modal").modal('hide');
+            $("#changeEmailModal").modal('hide');
         }
     });
 }

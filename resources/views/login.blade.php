@@ -26,9 +26,10 @@
 <div class="login_wrapper">
     <div class="animate form login_form">
         <section class="login_content">
+            <img src="{{asset('upload_file/'. $hospital->logo)}}" width='40px' class="img-circle profile_img"
+                 alt="{{ $hospital->name }}">
             <form action="{{route('doLogin')}}" method="POST">
                 @csrf
-                {{--                @method('post')--}}
                 <h1>Login Form</h1>
                 <div>
                     <select id="userType" name="userType" class="form-control">

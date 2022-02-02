@@ -1,12 +1,12 @@
 <!-- E-mail Modal -->
-<div id="change_email_modal" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog">
+<div id="changeEmailModal" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
-            <form id="change_email_form" onsubmit="return disabledSubmitBtn(this);">
+            <form id="changeEmailForm" onsubmit="return disabledSubmitBtn(this);">
                 @csrf
                 <input type="hidden" name="id" value="{{ $data->id }}"/>
-                <input type="hidden" id="user_type" value="{{ $user_type }}"/>
-                <input type="hidden" id="old_email" value="{{ $data->email }}"/>
+                <input type="hidden" id="userType" value="{{ $userType }}"/>
+                <input type="hidden" id="oldEmail" value="{{ $data->email }}"/>
 
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel2">
@@ -30,34 +30,34 @@
                     </button>
                 </div>
                 <script>
-                    function verification_mail() {
-                        var newMail = $('#email').val()
-                        var user_type = $('#user_type').val()
+                    function verificationEmail() {
+                        var newEmail = $('#email').val()
+                        var userType = $('#userType').val()
                         $.ajax({
                             method: "post",
-                            url: "{{ route('profile.update.email_verification_code') }}",
+                            url: "{{ route('profile.update.emailVerificationCode') }}",
                             data: {
                                 _token: "{{ csrf_token() }}",
                                 id: "{{$data->id}}",
                                 email: "{{ $data->email }}",
-                                newmail: newMail,
-                                user_type: user_type,
+                                newEmail: newEmail,
+                                userType: userType,
                             },
                             success: function (result) {
                                 console.log(result);
-                                $("#verification-code").modal('show');
-                                $("#change_email_modal").modal('hide');
+                                $("#verificationCode").modal('show');
+                                $("#changeEmailModal").modal('hide');
                             },
                             error: function (error) {
                                 console.log(error);
-                                $("#change_email_modal").modal('hide');
+                                $("#changeEmailModal").modal('hide');
                             }
                         });
                     }
 
                     function showVerificationCodeModal() {
-                        $("#verification-code").modal('show');
-                        $("#verification-code-error-message").modal('hide');
+                        $("#verificationCode").modal('show');
+                        $("#verificationCodeErrorMessage").modal('hide');
                     }
                 </script>
             </form>
@@ -68,7 +68,7 @@
 
 <!-- verification error code Message Modal -->
 <div class="code-content">
-    <div id="verification-code-error-message" class="modal fade small-modal form-white-field" tabindex="-1"
+    <div id="verificationCodeErrorMessage" class="modal fade small-modal form-white-field" tabindex="-1"
          role="dialog"
          aria-labelledby="exampleModalCenterTitle">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -98,7 +98,7 @@
 </div>
 
 <!-- Email Verified Modal -->
-<div id="email-verified" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog"
+<div id="emailVerified" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog"
      aria-labelledby="exampleModalCenterTitle">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -129,7 +129,7 @@
 
 <!-- verification code Modal -->
 <div class="code-content">
-    <div id="verification-code" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog"
+    <div id="verificationCode" class="modal fade small-modal form-white-field" tabindex="-1" role="dialog"
          aria-labelledby="exampleModalCenterTitle">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -146,18 +146,18 @@
                     <div class="modal-field">
                         <p>Please enter the verification code we just sent to your new email address.</p>
 
-                        <form method="get" name="verification_code" class="digit-group" data-group-name="digits"
+                        <form method="get" name="verificationCode" class="digit-group" data-group-name="digits"
                               data-autosubmit="false" autocomplete="off">
                             @csrf
                             <div class="modal-body">
                                 <h4>Verification Code</h4>
 
                                 <input type="text" class="form-control"
-                                       placeholder="Enter Verification Code " name="verification_code"
-                                       id="verification_code">
+                                       placeholder="Enter Verification Code " name="code"
+                                       id="code">
                             </div>
                         </form>
-                        <div id="error_msg" style="display:none">
+                        <div id="errorMsg" style="display:none">
                             <span id="email-error" class="validation-error">Please enter the valid verification code Please try again...</span>
                         </div>
                     </div>
@@ -168,27 +168,27 @@
                 </div>
                 <script>
                     jQuery('#checkVerificationCode').click(function () {
-                        var code = $('#verification_code').val();
-                        var newMail = $('#email').val()
-                        var user_type = $('#user_type').val()
+                        var verificationCode = $('#code').val();
+                        var newEmail = $('#email').val()
+                        var userType = $('#userType').val()
                         $.ajax({
                             method: "post",
                             url: "{{ route('profile.update.email') }}?date=" + Date.now(),
                             data: {
                                 _token: $('meta[name="csrf-token"]').attr('content'),
                                 id: "{{$data->id}}",
-                                newMail: newMail,
-                                verification_code: code,
-                                user_type: user_type,
+                                newEmail: newEmail,
+                                verificationCode: verificationCode,
+                                userType: userType,
                             },
                             success: function (result) {
                                 console.log(result);
-                                $("#verification-code").modal('hide');
-                                $("#email-verified").modal('show');
+                                $("#verificationCode").modal('hide');
+                                $("#emailVerified").modal('show');
                             },
                             error: function (error) {
                                 console.log(error);
-                                $("#error_msg").toggle();
+                                $("#errorMsg").toggle();
                             }
                         });
                     })

@@ -363,7 +363,7 @@
                                             </div>
                                             <x-change-password id="{{$staff->id}}" user-type="staffOrDoctor"/>
                                             <!-- Change E-mails Pop-Up -->
-                                            <div id="update_email_popup"></div>
+                                            <div id="updateEmailPopup"></div>
                                             <!-- /Change E-mails Pop-Up -->
                                             <!-- Change Mobile Pop-Up -->
                                             <div id="update_mobile_popup"></div>

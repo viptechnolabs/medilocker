@@ -3,12 +3,12 @@ function getEmailPopup(action, checkEmailAction, userId, userType) {
         url: action,
         type: "post",
         data: {
-            user_id: userId,
-            user_type: userType,
+            userId: userId,
+            userType: userType,
         },
         success: function (data) {
-            $('#update_email_popup').html(data);
-            $('#change_email_modal').modal(true)
+            $('#updateEmailPopup').html(data);
+            $('#changeEmailModal').modal(true)
 
             emailPopupValidation(checkEmailAction, userId, userType);
         },
@@ -19,7 +19,7 @@ function getEmailPopup(action, checkEmailAction, userId, userType) {
 }
 
 function emailPopupValidation(checkEmailAction, userId, userType) {
-    $('#change_email_form').validate({
+    $('#changeEmailForm').validate({
         errorElement: 'span',
         errorClass: 'validation-error',
         rules: {
@@ -31,7 +31,7 @@ function emailPopupValidation(checkEmailAction, userId, userType) {
                     type: "post",
                     data: {
                         _token: $('meta[name="csrf-token"]').attr('content'),
-                        user_type: userType,
+                        userType: userType,
                         email: function () {
                             return $("#email").val();
                         },
@@ -49,14 +49,14 @@ function emailPopupValidation(checkEmailAction, userId, userType) {
             }
         },
         submitHandler: function (form) {
-            verification_mail();
+            verificationEmail();
         },
         success: function (result) {
             console.log(result);
         },
         error: function (error) {
             console.log(error);
-            $("#change_email_modal").modal('hide');
+            $("#changeEmailModal").modal('hide');
         }
     });
 }
